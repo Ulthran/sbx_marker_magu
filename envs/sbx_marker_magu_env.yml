@@ -2,3 +2,5 @@ name: sbx_marker_magu
 channels:
   - conda-forge
   - bioconda
+dependencies:
+  - marker-magu
