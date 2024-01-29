@@ -1,5 +1,3 @@
-import csv
-import os
 import pytest
 import shutil
 import subprocess as sp
@@ -19,7 +17,7 @@ def setup():
 
     config_fp = project_dir / "sunbeam_config.yml"
 
-    config_str = f"sbx_marker_magu: {{example_rule_options: '--number'}}"
+    config_str = f"sbx_marker_magu: {{db_fp: '~/db/'}}"
 
     sp.check_output(
         [
@@ -49,7 +47,7 @@ def run_sunbeam(setup):
             "run",
             "--profile",
             project_dir,
-            "all_template",
+            "all_marker_magu",
             "--directory",
             temp_dir,
         ]
@@ -64,7 +62,7 @@ def run_sunbeam(setup):
 def test_full_run(run_sunbeam):
     output_fp, benchmarks_fp = run_sunbeam
 
-    big_file_fp = output_fp / "qc/mush/big_file.txt"
+    long1_fp = output_fp / "virus" / "marker_magu" / "LONG_1.detected_species.tsv"
 
     # Check output
-    assert big_file_fp.exists(), f"{big_file_fp} does not exist"
+    assert long1_fp.exists(), f"{long1_fp} does not exist"
