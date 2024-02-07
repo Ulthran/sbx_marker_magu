@@ -34,15 +34,15 @@ def run_sunbeam(setup):
             "all_marker_magu",
             "--directory",
             temp_dir,
+            "--include",
+            "sbx_marker_magu",
             "-n",
         ],
-        shell=True,
-        text=True,
-        capture_output=True
+        capture_output=True,
     )
 
     assert (
-        "all_marker_magu" in output.stdout
+        "all_marker_magu" in output.stdout.decode()
     ), f"stdout: {output.stdout}, stderr: {output.stderr}"
 
     output_fp = project_dir / "sunbeam_output"
