@@ -58,7 +58,8 @@ rule run_marker_magu:
         fnas=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_markerDB.fna",
         metadata=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_virus_DB_v1.1_metadata.tsv",
     output:
-        VIRUS_FP / "marker_magu" / "{sample}_{rp}.detected_species.tsv",
+        unzipped=temp(QC_FP / "decontam" / "{sample}_{rp}.fastq"),
+        detected_species=VIRUS_FP / "marker_magu" / "{sample}_{rp}.detected_species.tsv",
     log:
         LOG_FP / "run_marker_magu_{sample}_{rp}.log",
     benchmark:
@@ -67,9 +68,12 @@ rule run_marker_magu:
         db_fp=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1",
         out_fp=VIRUS_FP / "marker_magu"
     threads: 8
+    resources:
+        mem_mb=16000
     conda:
         "envs/sbx_marker_magu_env.yml"
     shell:
         """
-        markermagu -r {input.reads} -s {wildcards.sample}_{wildcards.rp} -o {params.out_fp} --db {params.db_fp} -t {threads} 2> {log}
+        gzip -dkf {input.reads} > {output.unzipped}
+        markermagu -r {output.unzipped} -s {wildcards.sample}_{wildcards.rp} -o {params.out_fp} --db {params.db_fp} -t {threads} 2> {log}
         """
