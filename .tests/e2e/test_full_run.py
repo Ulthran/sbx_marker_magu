@@ -25,7 +25,7 @@ def run_sunbeam(setup):
     temp_dir, project_dir = setup
 
     # Run the test job dry run
-    output = sp.capture_output(
+    output = sp.check_output(
         [
             "sunbeam",
             "run",
