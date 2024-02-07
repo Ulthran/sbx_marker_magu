@@ -25,7 +25,7 @@ def run_sunbeam(setup):
     temp_dir, project_dir = setup
 
     # Run the test job dry run
-    output = sp.check_output(
+    output = sp.run(
         [
             "sunbeam",
             "run",
@@ -35,9 +35,10 @@ def run_sunbeam(setup):
             "--directory",
             temp_dir,
             "-n",
-            "||",
-            "true",
-        ]
+        ],
+        shell=True,
+        text=True,
+        capture_output=True
     )
 
     assert (
