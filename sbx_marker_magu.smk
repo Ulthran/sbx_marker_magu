@@ -69,7 +69,8 @@ rule run_marker_magu:
         out_fp=VIRUS_FP / "marker_magu"
     threads: 8
     resources:
-        mem_mb=16000
+        mem_mb=70000,
+        runtime=120,
     conda:
         "envs/sbx_marker_magu_env.yml"
     shell:
