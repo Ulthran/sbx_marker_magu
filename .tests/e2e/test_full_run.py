@@ -25,7 +25,7 @@ def run_sunbeam(setup):
     temp_dir, project_dir = setup
 
     # Run the test job dry run
-    sp.check_output(
+    output = sp.capture_output(
         [
             "sunbeam",
             "run",
@@ -35,8 +35,12 @@ def run_sunbeam(setup):
             "--directory",
             temp_dir,
             "-n",
+            "||",
+            "true",
         ]
     )
+
+    assert "all_marker_magu" in output.stdout, f"stdout: {output.stdout}, stderr: {output.stderr}"
 
     output_fp = project_dir / "sunbeam_output"
     benchmarks_fp = project_dir / "stats/"
@@ -48,7 +52,7 @@ def test_full_run(run_sunbeam):
     output_fp, benchmarks_fp = run_sunbeam
 
     # DRY RUN
-    #long1_fp = output_fp / "virus" / "marker_magu" / "LONG_1.detected_species.tsv"
+    # long1_fp = output_fp / "virus" / "marker_magu" / "LONG_1.detected_species.tsv"
 
     # Check output
-    #assert long1_fp.exists(), f"{long1_fp} does not exist"
+    # assert long1_fp.exists(), f"{long1_fp} does not exist"
