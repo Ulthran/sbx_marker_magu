@@ -40,7 +40,9 @@ def run_sunbeam(setup):
         ]
     )
 
-    assert "all_marker_magu" in output.stdout, f"stdout: {output.stdout}, stderr: {output.stderr}"
+    assert (
+        "all_marker_magu" in output.stdout
+    ), f"stdout: {output.stdout}, stderr: {output.stderr}"
 
     output_fp = project_dir / "sunbeam_output"
     benchmarks_fp = project_dir / "stats/"
