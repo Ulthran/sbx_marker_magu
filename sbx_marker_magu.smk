@@ -18,19 +18,25 @@ localrules:
 
 rule all_marker_magu:
     input:
-        expand(VIRUS_FP / "marker_magu" / "{sample}_{rp}.detected_species.tsv", sample=Samples.keys(), rp=Pairs),
+        expand(
+            VIRUS_FP / "marker_magu" / "{sample}_{rp}.detected_species.tsv",
+            sample=Samples.keys(),
+            rp=Pairs,
+        ),
 
 
 rule install_marker_magu:
     output:
         fna=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_markerDB.fna",
-        metadata=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_virus_DB_v1.1_metadata.tsv",
+        metadata=Cfg["sbx_marker_magu"]["db_fp"]
+        / "v1.1"
+        / "Marker-MAGu_virus_DB_v1.1_metadata.tsv",
     log:
         LOG_FP / "install_marker_magu.log",
     benchmark:
         BENCHMARK_FP / "install_marker_magu.tsv"
     params:
-        base_dir=Cfg["sbx_marker_magu"]["db_fp"]
+        base_dir=Cfg["sbx_marker_magu"]["db_fp"],
     shell:
         """
         mkdir -p {params.base_dir}
@@ -56,7 +62,9 @@ rule run_marker_magu:
     input:
         reads=QC_FP / "decontam" / "{sample}_{rp}.fastq.gz",
         fnas=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_markerDB.fna",
-        metadata=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1" / "Marker-MAGu_virus_DB_v1.1_metadata.tsv",
+        metadata=Cfg["sbx_marker_magu"]["db_fp"]
+        / "v1.1"
+        / "Marker-MAGu_virus_DB_v1.1_metadata.tsv",
     output:
         unzipped=temp(QC_FP / "decontam" / "{sample}_{rp}.fastq"),
         detected_species=VIRUS_FP / "marker_magu" / "{sample}_{rp}.detected_species.tsv",
@@ -66,7 +74,7 @@ rule run_marker_magu:
         BENCHMARK_FP / "run_marker_magu_{sample}_{rp}.tsv"
     params:
         db_fp=Cfg["sbx_marker_magu"]["db_fp"] / "v1.1",
-        out_fp=VIRUS_FP / "marker_magu"
+        out_fp=VIRUS_FP / "marker_magu",
     threads: 8
     resources:
         mem_mb=70000,
