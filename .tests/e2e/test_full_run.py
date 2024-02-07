@@ -15,22 +15,6 @@ def setup():
 
     sp.check_output(["sunbeam", "init", "--data_fp", reads_fp, project_dir])
 
-    config_fp = project_dir / "sunbeam_config.yml"
-
-    config_str = f"sbx_marker_magu: {{db_fp: '~/db/'}}"
-
-    sp.check_output(
-        [
-            "sunbeam",
-            "config",
-            "modify",
-            "-i",
-            "-s",
-            f"{config_str}",
-            f"{config_fp}",
-        ]
-    )
-
     yield temp_dir, project_dir
 
     shutil.rmtree(temp_dir)
